@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +32,8 @@ namespace TaskCRUD
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskCRUD", Version = "v1" });
             });
+
+            services.AddDbContext<TasksContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Pooling=true;Database=tasks-crud;User Id=postgres; Password=123456;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

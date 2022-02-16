@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TaskCRUD.Model;
+using System.Threading.Tasks;
 
 namespace TaskCRUD.Controllers
 {
@@ -10,18 +11,19 @@ namespace TaskCRUD.Controllers
     [Route("tasks")]
     public class TasksController : ControllerBase
     {
-        public TasksController()
+        private readonly TasksContext _context;
+
+        public TasksController(TasksContext context)
         {
+            _context = context;
         }
         // localhost:5000/WeatherForecast METHOD: GET
         [HttpGet]
-        public Task Get()
+        public async Task<IActionResult> Get()
         {
-            return new Task
-            {
-                Description = "testing task description",
-                Title = "testing task"
-            };
+            var result = await _context.Tasks.ToListAsync();
+            if (result.Any()) return Ok(result);
+            return NotFound();
         }
 
     }
